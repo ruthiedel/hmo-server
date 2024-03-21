@@ -3,7 +3,7 @@ import multer from 'multer';
 // Configure storage for uploaded files
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null,'Pictures/');
+    cb(null,'Pictures');
   },
   filename: function (req, file, cb) {
     req.body.picture =  file.originalname+"-"+Date.now()+".jpg";

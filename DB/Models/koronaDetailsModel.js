@@ -6,6 +6,7 @@ const koronaDetailsdSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.String,
         ref: 'Customer'
     },
+
     vaccinationDates: {
         type: [{
             date: Date,
@@ -20,7 +21,7 @@ const koronaDetailsdSchema = new mongoose.Schema({
 
 
 function arrayLimit(val) {
-    return val.length < 4;
+    return val.length <= 4;
 }
 
 const koronaDetailsModel = mongoose.model('koronaDetails',koronaDetailsdSchema);

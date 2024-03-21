@@ -4,25 +4,19 @@ import {phone} from 'phone'
 
 
 const customersSchema = new mongoose.Schema({
-    // idNumber:{
-    //     type:String,
-    //     required: true,
-    //     validate: {
-    //       validator: function(v) {
-    //         // Check if ID number is 9 digits long
-    //         if (!/^\d{9}$/.test(v)) {
-    //           return false;
-    //         }
-    
-    //         // Check if ID number is valid using israel-id-validator library
-    //         return israelIdValidator.isValid(v);
-    //       },
-    //       message: props => `${props.value} is not a valid Israeli ID number`
-    //     }
-    // },
-    idNumber:String,
-    firstName:String,
-    lastName:String,
+    idNumber:{
+        type: String,
+        required: true,
+        unique: true // Assuming id should be unique
+    },
+    firstName:{
+        type: String,
+        required: true
+    },
+    lastName:{
+        type: String,
+        required: true
+    },
     phone:String,
     mobile:String,
     picture:String,
@@ -31,11 +25,17 @@ const customersSchema = new mongoose.Schema({
         type:{
         city:String,
         street:String,
-        houseNuber:String
+        houseNumber:{
+            type: Number,
+            min: 1
+        }
         }
     },
-    birthDate: Date,
-})
+    birthDate:{
+        type:Date,
+        required:true
+    } ,
+},{ versionKey: false })
 
 
 

@@ -21,7 +21,7 @@ async function getCustomerById(req,res)
 
     if(!data)
     {
-      res.send("customer is not in access")
+      res.status(500).send("customer is not in access")
     }
     else{
     res.send(data);
@@ -37,15 +37,16 @@ async function getCustomerById(req,res)
 
 async function UpdateCustomer(req,res)
 {
-
-
+  console.log("sfgh")
 try {
+  console.log("sfgh")
+
   let data = await customerModel.findOne({idNumber:req.body.idNumber});
-  
+  console.log(data)
   if(!data)
   {
   
-    res.send("customer is not in access")
+    res.status(5000).send("customer is not in access")
   }
   else{
     await customerModel.updateOne({idNumber: req.body.idNumber}, req.body);
@@ -74,7 +75,7 @@ async function addCustomer(req,res)
       }
       else
       {
-          res.send("addcustomer failed because this customer is already in the DB")
+          res.status(500).send("addcustomer failed because this customer is already in the DB")
       }
   } 
   catch (error) {

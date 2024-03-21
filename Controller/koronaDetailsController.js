@@ -21,7 +21,7 @@ async function getDetailsByCustomerId(req,res)
 
     if(!data)
     {
-      res.send("deatails are not in access")
+      res.status(404).send("deatails are not in access")
     }
     else{
     res.send(data);
@@ -45,7 +45,7 @@ try {
   if(!data)
   {
   
-    res.send("details are not in access")
+    res.status(404).send("details are not in access")
   }
   else{
     await koronaDetailsModel.updateOne({customerId: req.body.customerId}, req.body);
@@ -76,12 +76,12 @@ async function addKoronaDetails(req,res)
             res.status(200).send('add details success').end()
         }
         else{
-          res.send("add details failed because tere are details  already in the DB")
+          res.status(500).send("add details failed because tere are details  already in the DB")
         }
       }
       else
       {
-        res.send("add details failed because tere is no fited customer in the DB") 
+        res.status(500).send("add details failed because tere is no fited customer in the DB") 
       }
   } 
   catch (error) {

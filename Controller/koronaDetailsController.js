@@ -16,12 +16,12 @@ async function getKoranDeatils(req, res) {
 async function getDetailsByCustomerId(req,res)
 {
   try {
-    
+    console.log(req.params.id)
     let data = await koronaDetailsModel.findOne({customerId:req.params.id});
-
+       
     if(!data)
     {
-      res.status(404).send("deatails are not in access")
+      res.status(500).send("deatails are not in access")
     }
     else{
     res.send(data);
@@ -48,9 +48,14 @@ try {
     res.status(404).send("details are not in access")
   }
   else{
-    await koronaDetailsModel.updateOne({customerId: req.body.customerId}, req.body);
+    if ((!details.positiveTestDate || !details.recoveryDate) || (new Date(details.positiveTestDate) < new Date(details.recoveryDate))) {
+        await koronaDetailsModel.updateOne({customerId: req.body.customerId}, req.body);
 
-     res.send(data);
+         res.send(data);
+    }
+    else{
+      res.status(400).send("Positive test date must be before recovery date");
+    }
   }
 } catch (error) {
   console.log(error);
@@ -59,36 +64,34 @@ try {
 }
 
 
-async function addKoronaDetails(req,res)
-{
-    let details = req.body;
+async function addKoronaDetails(req, res) {
+  let details = req.body;
 
-    try {
-      let newdetails = new koronaDetailsModel(details)
-      let data = await customersModel.findOne({idNumber:req.body.customerId});
-      if(data)
-      {
-       
-        let data = await koronaDetailsModel.findOne({customerId:req.body.customerId})
-        if(!data)
-        {
-            await newdetails.save(); 
-            res.status(200).send('add details success').end()
-        }
-        else{
-          res.status(500).send("add details failed because tere are details  already in the DB")
-        }
+  try {
+      let newDetails = new koronaDetailsModel(details);
+      let customerData = await customersModel.findOne({ idNumber: req.body.customerId });
+      if (customerData) {
+          let existingDetails = await koronaDetailsModel.findOne({ customerId: req.body.customerId });
+          if (!existingDetails) {
+            if ((!details.positiveTestDate || !details.recoveryDate) ||
+            (new Date(details.positiveTestDate) < new Date(details.recoveryDate)))  {
+                  await newDetails.save();
+                  res.status(200).send('Add details success').end();
+              } else {
+                  res.status(400).send("Positive test date must be before recovery date");
+              }
+          } else {
+              res.status(409).send("Add details failed because there are details already in the DB");
+          }
+      } else {
+          res.status(404).send("Add details failed because there is no matching customer in the DB");
       }
-      else
-      {
-        res.status(500).send("add details failed because tere is no fited customer in the DB") 
-      }
-  } 
-  catch (error) {
+  } catch (error) {
       console.log(error);
       res.status(500).send('Internal Server Error From Add-Details');
   }
 }
+
 async function deleteKoronaDetails(req,res)
 {
   try{

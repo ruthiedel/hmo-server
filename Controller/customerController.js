@@ -9,14 +9,13 @@ async function getCustomers(req, res) {
   } 
   catch (error) {
     console.log(error);
-    res.status(500).send('Internal Server Error From get-customers');
+    res.status(500).send('Internal Server Error From get-customers ' +error.message);
   }
 }
 
 async function getCustomerById(req,res)
 {
   try {
-    console.log(req.params.id)
     let data = await customerModel.findOne({idNumber:req.params.id});
 
     if(!data)
@@ -28,7 +27,7 @@ async function getCustomerById(req,res)
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send('Internal Server Error From get-customer-by-id');
+    res.status(500).send('Internal Server Error From get-customer-by-id '+error.message);
   }
 }
 
@@ -37,12 +36,9 @@ async function getCustomerById(req,res)
 
 async function UpdateCustomer(req,res)
 {
-  console.log("sfgh")
 try {
-  console.log("sfgh")
 
   let data = await customerModel.findOne({idNumber:req.body.idNumber});
-  console.log(data)
   if(!data)
   {
   
@@ -55,15 +51,16 @@ try {
   }
 } catch (error) {
   console.log(error);
-  res.status(500).send('Internal Server Error');
+  res.status(500).send(error.message);
 }
 }
 
 
 async function addCustomer(req,res)
 {
-    let customer = req.body;
-    try {
+  try {
+      let customer = req.body;
+    
       let newcustomer = new customerModel(customer)
       let data = await customerModel.findOne({idNumber:req.body.idNumber});
     
@@ -80,7 +77,7 @@ async function addCustomer(req,res)
   } 
   catch (error) {
       console.log(error);
-      res.status(500).send('Internal Server Error From Add-Customer');
+      res.status(500).send(error.message);
   }
 }
 
@@ -130,7 +127,7 @@ async function deleteCustomer(req,res)
   catch(error)
   {
 
-   res.status(500).send('Internal Server Error');
+   res.status(500).send(error.message);
   }
 }
 

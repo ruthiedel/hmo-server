@@ -3,7 +3,7 @@ import {validDate} from './validations.js'
 const koronaDetailsSchema = new mongoose.Schema({
     customerId: {
         type: mongoose.Schema.Types.String,
-        ref: 'Customer'
+        ref: 'customers'
     },
     vaccinationDates: {
         type: [{

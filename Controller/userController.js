@@ -3,7 +3,7 @@ import userModel from '../DB/Models/userModel.js'
 import nodemailer from 'nodemailer';
 import {emailPassword} from '../../secret.js'
 
-   
+  
 async function addUser(req,res)
 {
     let u = req.body;

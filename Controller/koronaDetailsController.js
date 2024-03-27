@@ -48,7 +48,7 @@ try {
     res.status(404).send("details are not in access")
   }
   else{
-    if ((!details.positiveTestDate || !details.recoveryDate) || (new Date(details.positiveTestDate) < new Date(details.recoveryDate))) {
+    if ((!req.body.positiveTestDate || !req.body.recoveryDate) || (new Date(req.body.positiveTestDate) < new Date(req.body.recoveryDate))) {
         await koronaDetailsModel.updateOne({customerId: req.body.customerId}, req.body);
 
          res.send(data);
